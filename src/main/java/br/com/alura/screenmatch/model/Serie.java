@@ -4,6 +4,8 @@ import br.com.alura.screenmatch.service.ConsultaChatGPT;
 import jakarta.persistence.*;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.OptionalDouble;
 
 @Entity
@@ -28,14 +30,18 @@ public class Serie {
     private String poster;
     private String sinops;
 
+    @Transient
+    private List<Episodio> episodios = new ArrayList<>();
+
     public Serie(DadosSerie dadosSerie) {
         this.titulo = dadosSerie.titulo();
         this.totalTemporadas = dadosSerie.totalTemporadas();
         this.avaliacao = OptionalDouble.of(Double.valueOf(dadosSerie.avaliacao())).orElse(0);
-        this.genero = Categoria.fromString(dadosSerie.genero().split(",")[0].trim())  ;
+        this.genero = Categoria.valueOf(dadosSerie.genero());
         this.ator = dadosSerie.ator();
         this.poster = dadosSerie.poster();
-        this.sinops = ConsultaChatGPT.obterTraducao(dadosSerie.sinopse().trim());
+
+        //this.sinops = ConsultaChatGPT.obterTraducao(dadosSerie.sinopse().trim());
     }
 
     public Long getId() {
@@ -100,6 +106,14 @@ public class Serie {
 
     public void setSinops(String sinops) {
         this.sinops = sinops;
+    }
+
+    public List<Episodio> getEpisodios() {
+        return episodios;
+    }
+
+    public void setEpisodios(List<Episodio> episodios) {
+        this.episodios = episodios;
     }
 
     @Override
