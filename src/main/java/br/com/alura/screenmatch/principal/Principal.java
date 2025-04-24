@@ -36,6 +36,7 @@ public class Principal {
                     1 - Buscar séries
                     2 - Buscar episódios
                     3 - Listar Séries Buscadas
+                    4 - Apagar séries
                     0 - Sair
                     """;
 
@@ -52,6 +53,10 @@ public class Principal {
                     break;
                 case 3:
                     buscarSeriesBuscadas();
+                    break;
+                case 4:
+                    apagarSerieWeb();
+                    break;
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -60,6 +65,7 @@ public class Principal {
             }
         }
     }
+
 
     private void buscarSerieWeb() {
         DadosSerie dados = getDadosSerie();
@@ -94,13 +100,28 @@ public class Principal {
     }
 
     private void buscarSeriesBuscadas(){
-        List<Serie> series;
-        series = dadosSeries.stream()
-                        .map(d -> new Serie(d))
-                                .collect(Collectors.toList());
-        series.stream()
-                .sorted(Comparator.comparing(Serie::getGenero))
-                .forEach(System.out::println);
+        List<Serie> series = new ArrayList<>();
+        if (series.isEmpty()){
+            System.out.println("Nào existem séries listadas nesse banco de dados!!! \n");
+        }  else{
+            series = repositorio.findAll();
+            series.stream()
+                    .sorted(Comparator.comparing(Serie::getGenero))
+                    .forEach(System.out::println);
+        }
 
+
+    }
+
+    private void apagarSerieWeb() {
+        System.out.println("Digite o nome da série para apagar");
+        String serie = leitura.nextLine();
+        Optional<Serie> series = repositorio.findByTituloContainingIgnoreCase(serie);
+        if (series.isPresent()){
+            repositorio.deleteById(series.get().getId());
+            System.out.println("Série " + series + "\n deletada com sucesso!!!");
+        } else {
+            System.out.println("Série " + series + "\n não encontrada!!!");
+        }
     }
 }
