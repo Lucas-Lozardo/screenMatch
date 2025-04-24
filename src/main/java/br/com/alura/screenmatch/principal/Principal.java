@@ -63,9 +63,14 @@ public class Principal {
 
     private void buscarSerieWeb() {
         DadosSerie dados = getDadosSerie();
-        Serie serie = new Serie(dados);
-        repositorio.save(serie);
-        System.out.println(dados);
+        try{
+            Serie serie = new Serie(dados);
+            repositorio.save(serie);
+            System.out.println(dados);
+        } catch (RuntimeException e) {
+            System.out.println("Esta série já consta no banco de dados: " + dados.titulo());
+        }
+
     }
 
     private DadosSerie getDadosSerie() {
