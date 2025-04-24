@@ -52,7 +52,7 @@ public class Principal {
                     buscarEpisodioPorSerie();
                     break;
                 case 3:
-                    buscarSeriesBuscadas();
+                    listarSeriesBuscadas();
                     break;
                 case 4:
                     apagarSerieWeb();
@@ -99,12 +99,11 @@ public class Principal {
         temporadas.forEach(System.out::println);
     }
 
-    private void buscarSeriesBuscadas(){
-        List<Serie> series = new ArrayList<>();
+    private void listarSeriesBuscadas(){
+        List<Serie> series = repositorio.findAll();;
         if (series.isEmpty()){
             System.out.println("Nào existem séries listadas nesse banco de dados!!! \n");
         }  else{
-            series = repositorio.findAll();
             series.stream()
                     .sorted(Comparator.comparing(Serie::getGenero))
                     .forEach(System.out::println);
@@ -119,9 +118,9 @@ public class Principal {
         Optional<Serie> series = repositorio.findByTituloContainingIgnoreCase(serie);
         if (series.isPresent()){
             repositorio.deleteById(series.get().getId());
-            System.out.println("Série " + series + "\n deletada com sucesso!!!");
+            System.out.println(series + "\n Série deletada com sucesso!!!");
         } else {
-            System.out.println("Série " + series + "\n não encontrada!!!");
+            System.out.println(series + "\n Série não encontrada!!!");
         }
     }
 }
