@@ -5,7 +5,9 @@ public enum Categoria {
     ROMANCE("Romance"),
     COMEDIA("Comedy"),
     DRAMA("Drama"),
-    CRIME("Crime");
+    CRIME("Crime"),
+    FANTASIA("Fantasy"),
+    HORROR("Horror");
 
     private String categoriaOmdb;
 
@@ -19,6 +21,6 @@ public enum Categoria {
                 return categoria;
             }
         }
-        throw new IllegalArgumentException("Nenhuma categoria encontrada para a string fornecida");
+        throw new IllegalArgumentException("Nenhuma categoria encontrada para a string fornecida" + text);
     }
 }

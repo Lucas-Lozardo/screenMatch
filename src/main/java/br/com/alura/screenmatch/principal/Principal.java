@@ -26,7 +26,7 @@ public class Principal {
 
 
     public Principal(SerieRepository repository) {
-        this.repositorio = repositorio;
+        this.repositorio = repository;
     }
 
     public void exibeMenu() {

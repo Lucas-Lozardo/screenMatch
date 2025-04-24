@@ -1,6 +1,7 @@
 package br.com.alura.screenmatch.model;
 
 import br.com.alura.screenmatch.service.ConsultaChatGPT;
+import com.theokanning.openai.OpenAiHttpException;
 import jakarta.persistence.*;
 
 
@@ -36,12 +37,22 @@ public class Serie {
     public Serie(DadosSerie dadosSerie) {
         this.titulo = dadosSerie.titulo();
         this.totalTemporadas = dadosSerie.totalTemporadas();
-        this.avaliacao = OptionalDouble.of(Double.valueOf(dadosSerie.avaliacao())).orElse(0);
-        this.genero = Categoria.valueOf(dadosSerie.genero());
+        this.avaliacao = OptionalDouble.of(Double.parseDouble(dadosSerie.avaliacao())).orElse(0);
+        try{
+            this.genero = Categoria.valueOf(dadosSerie.genero());
+        } catch (IllegalArgumentException e) {
+        // Lidar com o erro, talvez atribuir um valor padrão ou lançar uma exceção personalizada
+        System.out.println("Gênero inválido: " + dadosSerie.genero());
+    }
         this.ator = dadosSerie.ator();
         this.poster = dadosSerie.poster();
-
-        //this.sinops = ConsultaChatGPT.obterTraducao(dadosSerie.sinopse().trim());
+        try{
+            //this.sinops = ConsultaChatGPT.obterTraducao(dadosSerie.sinopse().trim());
+            this.sinops = dadosSerie.sinopse().trim();
+        } catch (OpenAiHttpException e) {
+            System.out.println("Erro ao obter tradução: " + e.getMessage());
+            this.sinops = "Tradução não disponível"; // ou algum valor padrão
+        }
     }
 
     public Long getId() {
