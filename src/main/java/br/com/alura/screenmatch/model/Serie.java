@@ -31,7 +31,7 @@ public class Serie {
     private String poster;
     private String sinops;
 
-    @Transient
+    @OneToMany(mappedBy = "serie")
     private List<Episodio> episodios = new ArrayList<>();
 
     public Serie(DadosSerie dadosSerie) {
