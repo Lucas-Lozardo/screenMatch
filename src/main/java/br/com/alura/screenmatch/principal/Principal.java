@@ -23,11 +23,11 @@ public class Principal {
     private List<Serie> series = new ArrayList<>();
 
     @Autowired
-    private SerieRepository repositorio;
+    private SerieRepository repository;
 
 
     public Principal(SerieRepository repository) {
-        this.repositorio = repository;
+        this.repository = repository;
     }
 
     public void exibeMenu() {
@@ -42,7 +42,15 @@ public class Principal {
                     """;
 
             System.out.println(menu);
-            opcao = leitura.nextInt();
+
+            try{
+                opcao = Integer.parseInt(leitura.nextLine());
+            } catch (NumberFormatException e){
+                System.out.println("Digite um número válido!");
+                opcao = -1;
+                continue;
+            }
+
             leitura.nextLine();
 
             switch (opcao) {
@@ -72,7 +80,7 @@ public class Principal {
         DadosSerie dados = getDadosSerie();
         try{
             Serie serie = new Serie(dados);
-            repositorio.save(serie);
+            repository.save(serie);
             System.out.println(dados);
         } catch (RuntimeException e) {
             System.out.println("Esta série já consta no banco de dados: " + dados.titulo());
@@ -93,16 +101,20 @@ public class Principal {
         System.out.println("Escolha uma série pelo nome:");
         var nomeSerie = leitura.nextLine();
 
-        Optional<Serie> serie = series.stream().filter(s -> s.getTitulo().toLowerCase().contains(nomeSerie.toLowerCase()))
+        Optional<Serie> serie = series.stream()
+                .filter(s -> s.getTitulo().toLowerCase().contains(nomeSerie.toLowerCase()))
                 .findFirst();
-
 
         if(serie.isPresent()){
             var serieEncontrada = serie.get();
             List<DadosTemporada> temporadas = new ArrayList<>();
 
             for (int i = 1; i <= serieEncontrada.getTotalTemporadas(); i++) {
-                var json = consumo.obterDados(ENDERECO + serieEncontrada.getTitulo().replace(" ", "+") + "&season=" + i + API_KEY);
+                var json = consumo.obterDados(ENDERECO
+                        + serieEncontrada.getTitulo().replace(" ", "+")
+                        + "&season="
+                        + i
+                        + API_KEY);
                 DadosTemporada dadosTemporada = conversor.obterDados(json, DadosTemporada.class);
                 temporadas.add(dadosTemporada);
             }
@@ -114,24 +126,19 @@ public class Principal {
                     .collect(Collectors.toList());
 
             serieEncontrada.setEpisodios(episodios);
-            repositorio.save(serieEncontrada);
+            repository.save(serieEncontrada);
         } else {
-            System.out.println(("Série não encontrada!!!"));
+            System.out.println("Série não encontrada!!!");
         }
-
-
-
-
-
     }
 
     private void listarSeriesBuscadas(){
-        series = repositorio.findAll();;
+        series = repository.findAll();
         if (series.isEmpty()){
             System.out.println("Nào existem séries listadas nesse banco de dados!!! \n");
-        }  else{
+        } else {
             series.stream()
-                    .sorted(Comparator.comparing(Serie::getGenero))
+                    .sorted(Comparator.comparing(Serie::getGenero, Comparator.nullsLast(Comparator.naturalOrder())))
                     .forEach(System.out::println);
         }
 
@@ -141,9 +148,9 @@ public class Principal {
     private void apagarSerieWeb() {
         System.out.println("Digite o nome da série para apagar");
         String serie = leitura.nextLine();
-        Optional<Serie> series = repositorio.findByTituloContainingIgnoreCase(serie);
+        Optional<Serie> series = repository.findByTituloContainingIgnoreCase(serie);
         if (series.isPresent()){
-            repositorio.deleteById(series.get().getId());
+            repository.deleteById(series.get().getId());
             System.out.println(series + "\n Série deletada com sucesso!!!");
         } else {
             System.out.println(series + "\n Série não encontrada!!!");
