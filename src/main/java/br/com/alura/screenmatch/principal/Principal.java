@@ -51,7 +51,6 @@ public class Principal {
                 continue;
             }
 
-            leitura.nextLine();
 
             switch (opcao) {
                 case 1:
