@@ -38,7 +38,9 @@ public class Principal {
                     2 - Buscar episódios
                     3 - Listar Séries Buscadas
                     4 - Buscar Série por título
-                    5 - Apagar séries
+                    5 - Buscar Série por ator
+                    6 - Apagar séries
+                    
                     0 - Sair
                     """;
 
@@ -67,6 +69,9 @@ public class Principal {
                     buscarSeriePorTitulo();
                     break;
                 case 5:
+                    buscarSeriePorAtor();
+                    break;
+                case 6:
                     apagarSerieWeb();
                     break;
                 case 0:
@@ -165,6 +170,20 @@ public class Principal {
         }
 
 
+    }
+
+    private void buscarSeriePorAtor() {
+        System.out.println("Digite o nome de um ator/atriz da série: ");
+        String nomeAtor = leitura.nextLine();
+        List<Serie> seriesEncontradas = repository.findByAtorContainingIgnoreCase(nomeAtor);
+        if (seriesEncontradas.isEmpty()){
+            System.out.println("Nenhuma série encontrada com este ator/atriz");
+        } else {
+            System.out.println("Série(s) encontrada(s) com " + nomeAtor + ": ");
+            seriesEncontradas.forEach(s -> System.out.println(s.getTitulo() + " Avaliação da Série: "
+                    + s.getAvaliacao()
+                    + " poster: " + s.getPoster()));
+        }
     }
 
     private void apagarSerieWeb() {

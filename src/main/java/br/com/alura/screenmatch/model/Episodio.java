@@ -97,7 +97,6 @@ public class Episodio {
                 "Titulo = '" + titulo + "'\n" +
                 "NumeroEpisodio = " + numeroEpisodio + "\n" +
                 "Avaliacao = " + avaliacao + "\n" +
-                "DataLancamento = " + dataLancamento + "\n" +
-                "\n";
+                "DataLancamento = " + dataLancamento + "\n";
     }
 }

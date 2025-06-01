@@ -137,9 +137,8 @@ public class Serie {
                 "Avaliacao = " + avaliacao + "\n" +
                 "Atores = " + ator + "\n" +
                 "Poster = " + poster + "\n" +
-                "Sinops = " + sinops + "\n" +
-                "Episodios = " + episodios+ "\n" +
-                "\n";
+                "Sinops = " + sinops + "\n";
+
 
     }
 }
