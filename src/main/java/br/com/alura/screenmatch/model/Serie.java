@@ -31,7 +31,7 @@ public class Serie {
     private String poster;
     private String sinops;
 
-    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Episodio> episodios = new ArrayList<>();
 
     public Serie(DadosSerie dadosSerie) {
@@ -124,18 +124,22 @@ public class Serie {
     }
 
     public void setEpisodios(List<Episodio> episodios) {
+        episodios.forEach(e -> e.setSerie(this));  //Associação da CHAVE ESTRANGEIRA de episodios para série.
         this.episodios = episodios;
     }
 
     @Override
     public String toString() {
-        return "Serie: " +
-                "Genero=" + genero +
-                ", Titulo=" + titulo +
-                ", TotaldeTemporadas=" + totalTemporadas +
-                ", Avaliacao=" + avaliacao +
-                ", Atores=" + ator +
-                ", Poster=" + poster +
-                ", Sinops=" + sinops;
+        return "Serie: " + "\n" +
+                "Genero = " + genero  + "\n" +
+                "Titulo = " + titulo + "\n" +
+                "TotaldeTemporadas = " + totalTemporadas + "\n" +
+                "Avaliacao = " + avaliacao + "\n" +
+                "Atores = " + ator + "\n" +
+                "Poster = " + poster + "\n" +
+                "Sinops = " + sinops + "\n" +
+                "Episodios = " + episodios+ "\n" +
+                "\n";
+
     }
 }
