@@ -34,10 +34,11 @@ public class Principal {
         var opcao = -1;
         while(opcao != 0) {
             var menu = """
-                    1 - Buscar séries
+                    1 - Buscar séries na Web
                     2 - Buscar episódios
                     3 - Listar Séries Buscadas
-                    4 - Apagar séries
+                    4 - Buscar Série por título
+                    5 - Apagar séries
                     0 - Sair
                     """;
 
@@ -63,6 +64,9 @@ public class Principal {
                     listarSeriesBuscadas();
                     break;
                 case 4:
+                    buscarSeriePorTitulo();
+                    break;
+                case 5:
                     apagarSerieWeb();
                     break;
                 case 0:
@@ -129,6 +133,22 @@ public class Principal {
         } else {
             System.out.println("Série não encontrada!!!");
         }
+    }
+
+    private void buscarSeriePorTitulo(){
+        System.out.println("Digite o nome da série: ");
+        String serie = leitura.nextLine();
+        Optional<Serie> series = repository.findByTituloContainingIgnoreCase(serie);
+        if (series.isEmpty()){
+            System.out.println("""
+                    Série não localizada no banco de dados!!!\s
+                    Favor digitar 1 no menu principal e adicionar a série da web no banco de dados primeiro!\s
+                    """);
+        } else {
+            System.out.println(series);
+        }
+
+
     }
 
     private void listarSeriesBuscadas(){
