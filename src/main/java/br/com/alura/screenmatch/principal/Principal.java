@@ -39,7 +39,8 @@ public class Principal {
                     3 - Listar Séries Buscadas
                     4 - Buscar Série por título
                     5 - Buscar Série por ator
-                    6 - Apagar séries
+                    6 - Buscar Top Séries 5
+                    7 - Apagar séries
                     
                     0 - Sair
                     """;
@@ -70,8 +71,10 @@ public class Principal {
                     break;
                 case 5:
                     buscarSeriePorAtor();
-                    break;
                 case 6:
+                    buscarTop5Series();
+                    break;
+                case 7:
                     apagarSerieWeb();
                     break;
                 case 0:
@@ -184,6 +187,12 @@ public class Principal {
                     + s.getAvaliacao()
                     + " poster: " + s.getPoster()));
         }
+    }
+
+    private void buscarTop5Series(){
+        List<Serie> top5 = repository.findTop5ByOrderByAvaliacaoDesc();
+        System.out.println("Séries Top 5:");
+        top5.forEach(t -> System.out.println(t.getTitulo() + " Avaliação: " + t.getAvaliacao()));
     }
 
     private void apagarSerieWeb() {
