@@ -38,7 +38,8 @@ public class Principal {
                     5 - Buscar Série por ator
                     6 - Buscar Top Séries 5
                     7 - Buscar Séries por Categoria
-                    8 - Apagar séries
+                    8 - Buscar Séries por total de temporadas e avaliação desejada
+                    9 - Apagar séries
                     
                     0 - Sair
                     """;
@@ -76,6 +77,9 @@ public class Principal {
                     buscarSeriesPorCategoria();
                     break;
                 case 8:
+                    buscarSeriesPorTotalDeTemporadasEAvaliacao();
+                    break;
+                case 9:
                     apagarSerieWeb();
                     break;
                 case 0:
@@ -203,6 +207,21 @@ public class Principal {
         List<Serie> series = repository.findByGenero(categoria);
         System.out.println("Séries da categoria " + categoriaEscolhida + " encontradas: ");
         series.forEach(System.out::println);
+    }
+
+    private void buscarSeriesPorTotalDeTemporadasEAvaliacao(){
+        System.out.println("Digite o total de temporadas da série que deseja: ");
+        int totalTemporadasEscolhida = leitura.nextInt();
+        System.out.println("Digite a avaliação mínima da série que deseja: ");
+        double avaliacaoEscolhida = leitura.nextDouble();
+        List<Serie> series = repository
+                .findByTotalTemporadasLessThanEqualAndAvaliacaoGreaterThanEqual(totalTemporadasEscolhida, avaliacaoEscolhida);
+        System.out.println("Séries encontradas:");
+        series.forEach(serie -> System.out.println(serie.getTitulo()
+                + "Total de Temporadas: "
+                + serie.getTotalTemporadas()
+                + "Avaliação: "
+                + serie.getAvaliacao()));
     }
 
     private void apagarSerieWeb() {
