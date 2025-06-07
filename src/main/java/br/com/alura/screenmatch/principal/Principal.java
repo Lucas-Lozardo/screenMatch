@@ -38,8 +38,9 @@ public class Principal {
                     5 - Buscar Série por ator
                     6 - Buscar Top Séries 5
                     7 - Buscar Séries por Categoria
-                    8 - Buscar Séries por total de temporadas e avaliação desejada
-                    9 - Apagar séries
+                    8 - Buscar Episódios por Trecho
+                    9 - Buscar Séries por total de temporadas e avaliação desejada
+                    10 - Apagar séries
                     
                     0 - Sair
                     """;
@@ -49,7 +50,7 @@ public class Principal {
             try{
                 opcao = Integer.parseInt(leitura.nextLine());
             } catch (NumberFormatException e){
-                System.out.println("Digite um número válido!");
+                System.out.println("Digite um número válido! \n");
                 opcao = -1;
                 continue;
             }
@@ -80,6 +81,9 @@ public class Principal {
                     buscarSeriesPorTotalDeTemporadasEAvaliacao();
                     break;
                 case 9:
+                    buscarEpisodioPorTrecho();
+                    break;
+                case 10:
                     apagarSerieWeb();
                     break;
                 case 0:
@@ -223,6 +227,14 @@ public class Principal {
                 + serie.getTotalTemporadas()
                 + " Avaliação: "
                 + serie.getAvaliacao()));
+    }
+
+    private void buscarEpisodioPorTrecho(){
+        System.out.println("Qual o nome do episódio para busca?");
+        var trechoEpisodio = leitura.nextLine();
+        List<Episodio> episodiosEncontrados = repository.episodiosPorTrecho(trechoEpisodio);
+        episodiosEncontrados.forEach(System.out::println);
+
     }
 
     private void apagarSerieWeb() {
