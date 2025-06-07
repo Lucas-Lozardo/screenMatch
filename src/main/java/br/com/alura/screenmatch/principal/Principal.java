@@ -215,12 +215,13 @@ public class Principal {
         System.out.println("Digite a avaliação mínima da série que deseja: ");
         double avaliacaoEscolhida = leitura.nextDouble();
         List<Serie> series = repository
-                .findByTotalTemporadasLessThanEqualAndAvaliacaoGreaterThanEqual(totalTemporadasEscolhida, avaliacaoEscolhida);
+                .seriesPorTemporadaEAvaliacao(totalTemporadasEscolhida, avaliacaoEscolhida);
+               // .findByTotalTemporadasLessThanEqualAndAvaliacaoGreaterThanEqual(totalTemporadasEscolhida, avaliacaoEscolhida); PODE SER FEITO DESSA FORMA
         System.out.println("Séries encontradas:");
         series.forEach(serie -> System.out.println(serie.getTitulo()
-                + "Total de Temporadas: "
+                + " Total de Temporadas: "
                 + serie.getTotalTemporadas()
-                + "Avaliação: "
+                + " Avaliação: "
                 + serie.getAvaliacao()));
     }
 
