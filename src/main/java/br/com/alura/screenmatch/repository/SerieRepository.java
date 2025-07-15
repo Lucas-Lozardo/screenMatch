@@ -21,6 +21,8 @@ public interface SerieRepository extends JpaRepository<Serie, Long> {
 
     List<Serie> findByGenero(Categoria categoria);
 
+    ///List<Serie> findTop5ByOrderByEpisodiosDataLancamentoDesc();
+
     List<Serie> findByTotalTemporadasLessThanEqualAndAvaliacaoGreaterThanEqual(int totalTemporadas, double avaliacao);
 
     //JPQL
@@ -29,4 +31,10 @@ public interface SerieRepository extends JpaRepository<Serie, Long> {
 
     @Query("SELECT e FROM Serie s JOIN s.episodios e WHERE e.titulo ILIKE %:trechoEpisodio%")    // ILIKE = IgnoreCase e %% = contains
     List<Episodio> episodiosPorTrecho(String trechoEpisodio);
+
+    @Query("SELECT s FROM Serie s " +
+            "JOIN s.episodios e " +
+            "GROUP BY s " +
+            "ORDER BY MAX(e.dataLancamento) DESC LIMIT 5")
+    List<Serie> encontrarEpisodiosMaisRecentes();
 }
